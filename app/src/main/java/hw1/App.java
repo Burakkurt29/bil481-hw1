@@ -3,7 +3,19 @@
  */
 package hw1;
 
+import static spark.Spark.get;
+import static spark.Spark.post;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+//import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import spark.ModelAndView;
+import spark.template.mustache.MustacheTemplateEngine;
 
 public class App {
     /**
@@ -63,6 +75,58 @@ public class App {
     }
 
     public static void main(String[] args) {
+        Logger logger = LogManager.getLogger(App.class);
+        logger.error("!!!error occurred!!!");
+
         System.out.println(new App().getGreeting());
+
+        get("/", (req,res) -> "Hello World!!!!!");
+        post("/compute", (req,res)-> {
+
+            String input1=req.queryParams("array");
+            input1=input1.replaceAll("[;\r\n]+", ",");
+            String[] strArr=input1.split(",");
+
+            ArrayList<Integer> arr=new ArrayList<Integer>(strArr.length);
+
+            for(int i=0;i<strArr.length;i++){
+                arr.add(Integer.parseInt(strArr[i]));     
+            }
+
+            String input2=req.queryParams("tane").replaceAll("\\s", "");
+            int tane=Integer.parseInt(input2);
+
+            String input3=req.queryParams("kucuk_sayi").replaceAll("\\s", "");
+            int kucuk=Integer.parseInt(input3);
+
+            String input4=req.queryParams("buyuk_sayi").replaceAll("\\s", "");
+            int buyuk=Integer.parseInt(input4);
+
+            int[] sonuc=groupByTwoInt(arr, tane, kucuk, buyuk);
+            
+            String result="{";
+            for(int a:sonuc)
+                result=result+" "+a;
+            result=result+" }";
+
+            Map<String,String> map=new HashMap<String,String>();
+            map.put("result",result);
+
+            return new ModelAndView(map, "compute.mustache");
+            
+        }, new MustacheTemplateEngine());
+
+        get("compute",
+            (rq,rs)->{
+
+                Map<String,String> map=new HashMap<String,String>();
+                map.put("result","not computed yet!");
+                return new ModelAndView(map,"compute.mustache");
+
+            },
+
+            new MustacheTemplateEngine()
+
+        );
     }
 }
