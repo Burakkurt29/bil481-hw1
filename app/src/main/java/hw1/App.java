@@ -4,16 +4,6 @@
 package hw1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.template.mustache.MustacheTemplateEngine;
-import static spark.Spark.get;
-import static spark.Spark.post;
 
 public class App {
     /**
@@ -74,43 +64,5 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
-
-        get("/", (req,res) -> "Hello World");
-        post("/", (req,res)-> {
-            
-            String input1=req.queryParams("array");
-            String[] strArr=input1.split(",");
-            ArrayList<Integer> arr=new ArrayList<Integer>(strArr.length);
-            
-            for(int i=0;i<strArr.length;i++){
-                arr.add(Integer.parseInt(strArr[i]));     
-            }
-
-            String input2=req.queryParams("tane");
-            int tane=Integer.parseInt(input2);
-
-            String input3=req.queryParams("kucuk_sayi");
-            int kucuk=Integer.parseInt(input3);
-
-            String input4=req.queryParams("buyuk_sayi");
-            int buyuk=Integer.parseInt(input4);
-
-            int[] sonuc=groupByTwoInt(arr, tane, kucuk, buyuk);
-            
-
-            return "";
-        });
-        get("compute",
-            (rq,rs)->{
-
-                Map<String,String> map=new HashMap<String,String>();
-                map.put("result","not computed yet!");
-                return new ModelAndView(map,"compute.mustache");
-                
-            },
-            
-            new MustacheTemplateEngine()
-
-        );
     }
 }
