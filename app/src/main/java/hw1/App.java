@@ -76,7 +76,7 @@ public class App {
 
     public static void main(String[] args) {
         Logger logger = LogManager.getLogger(App.class);
-        logger.error("!!!error occurred!!!");
+        logger.error("!!!logger error test!!!");
 
         System.out.println(new App().getGreeting());
 

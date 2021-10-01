@@ -19,7 +19,7 @@ plugins {
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
-    jcenter()
+    
 }
 
 dependencies {
@@ -47,3 +47,6 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+task stage(dependsOn: ['shadowJar'])
+shadowJar.mustRunAfter clean
