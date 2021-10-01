@@ -5,6 +5,7 @@ package hw1;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.port;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,6 +80,8 @@ public class App {
         logger.error("!!!logger error test!!!");
 
         System.out.println(new App().getGreeting());
+
+        port(Integer.parseInt(System.getenv("PORT")));
 
         get("/", (req,res) -> "Hello World!!!!!");
         post("/compute", (req,res)-> {
